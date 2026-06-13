@@ -1,25 +1,38 @@
 package io.chaws.enderchestplus.mixin;
 
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.ChestMenu;
+import net.minecraft.world.SimpleContainer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(ChestMenu.class)
+@Mixin(SimpleContainer.class)
 public class EnderChestInventoryMixin {
-    @Inject(
-        method = "threeRows",
-        at = @At("HEAD"),
-        cancellable = true,
-        require = 0
-    )
-    private static void onThreeRows(int syncId, Inventory inventory, CallbackInfoReturnable<ChestMenu> cir) {
-        // Redirect all threeRows calls to sixRows
-        // This will affect all 3-row chests, not just enderchests
-        // But since we're also expanding the inventory via EnderChestBlockMixin,
-        // this should work for enderchests
-        cir.setReturnValue(ChestMenu.sixRows(syncId, inventory, inventory.player.getEnderChestInventory()));
+    @Inject(method = "<init>(I)V", at = @At("RETURN"), require = 0)
+    private void onInit(int size, CallbackInfo ci) {
+        // Check if this is being called for an enderchest (size 27)
+        // If so, expand the internal list to 54 slots
+        if (size == 27) {
+            try {
+                // Access the items field and replace it with a larger list
+                java.lang.reflect.Field itemsField = SimpleContainer.class.getDeclaredField("items");
+                itemsField.setAccessible(true);
+                @SuppressWarnings("unchecked")
+                net.minecraft.core.NonNullList<net.minecraft.world.item.ItemStack> items =
+                    (net.minecraft.core.NonNullList<net.minecraft.world.item.ItemStack>) itemsField.get(this);
+
+                // Create a new list with 54 slots and copy existing items
+                net.minecraft.core.NonNullList<net.minecraft.world.item.ItemStack> newItems =
+                    net.minecraft.core.NonNullList.withSize(54, net.minecraft.world.item.ItemStack.EMPTY);
+
+                for (int i = 0; i < items.size(); i++) {
+                    newItems.set(i, items.get(i));
+                }
+
+                itemsField.set(this, newItems);
+            } catch (Exception e) {
+                // If reflection fails, just continue with original size
+            }
+        }
     }
 }
