@@ -1,6 +1,6 @@
-package io.chaws.expandedenderchest;
+package io.chaws.enderchestplus;
 
-import io.chaws.expandedenderchest.event.EnderChestEventHandler;
+import io.chaws.enderchestplus.event.EnderChestEventHandler;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -10,12 +10,12 @@ import org.slf4j.LoggerFactory;
 
 @Mod(ExpandedEnderchest.MOD_ID)
 public class ExpandedEnderchest {
-    public static final String MOD_ID = "expandedenderchest";
+    public static final String MOD_ID = "enderchestplus";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
     public ExpandedEnderchest(IEventBus modEventBus) {
         modEventBus.addListener(this::onCommonSetup);
-        
+
         NeoForge.EVENT_BUS.addListener(EnderChestEventHandler::onPlayerLoggedIn);
         NeoForge.EVENT_BUS.addListener(EnderChestEventHandler::onPlayerTick);
     }
