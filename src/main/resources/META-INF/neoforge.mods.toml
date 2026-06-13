@@ -1,0 +1,26 @@
+modLoader="javafml"
+loaderVersion="[2,)"
+license="LGPL-3.0"
+
+[[mods]]
+modId="expandedenderchest"
+version="${file.jarVersion}"
+displayName="Enderchest+"
+description="Expands the enderchest to be the size of a double chest (54 slots)"
+
+[[mixins]]
+    config="expandedenderchest.mixins.json"
+
+[[dependencies.expandedenderchest]]
+    modId="neoforge"
+    type="required"
+    versionRange="[21.1.79,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.expandedenderchest]]
+    modId="minecraft"
+    type="required"
+    versionRange="[1.21.1,)"
+    ordering="NONE"
+    side="BOTH"
