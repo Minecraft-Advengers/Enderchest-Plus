@@ -1,25 +1,25 @@
 package io.chaws.enderchestplus.mixin;
 
-import net.minecraft.core.NonNullList;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.ChestMenu;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(targets = "net.minecraft.world.entity.player.PlayerEnderChestContainer")
+@Mixin(ChestMenu.class)
 public class EnderChestInventoryMixin {
-    private static final int EXPANDED_SIZE = 54;
-
-    @Redirect(
-        method = "<init>",
-        at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/core/NonNullList;withSize(ILjava/lang/Object;)Lnet/minecraft/core/NonNullList;"
-        ),
+    @Inject(
+        method = "threeRows",
+        at = @At("HEAD"),
+        cancellable = true,
         require = 0
     )
-    private NonNullList<ItemStack> expandInventorySize(int size, ItemStack defaultValue) {
-        // Replace the default 27 size with 54
-        return NonNullList.withSize(EXPANDED_SIZE, defaultValue);
+    private static void onThreeRows(int syncId, Inventory inventory, CallbackInfoReturnable<ChestMenu> cir) {
+        // Redirect all threeRows calls to sixRows
+        // This will affect all 3-row chests, not just enderchests
+        // But since we're also expanding the inventory via EnderChestBlockMixin,
+        // this should work for enderchests
+        cir.setReturnValue(ChestMenu.sixRows(syncId, inventory, inventory.player.getEnderChestInventory()));
     }
 }
