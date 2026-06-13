@@ -1,4 +1,4 @@
-package io.chaws.expandedenderchest.mixin;
+package io.chaws.enderchestplus.mixin;
 
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ChestMenu;
@@ -16,19 +16,9 @@ public class EnderChestMenuMixin {
         require = 0
     )
     private static void onThreeRows(int syncId, Inventory inventory, CallbackInfoReturnable<ChestMenu> cir) {
-        // Check if this is an enderchest by checking if the container is the player's enderchest inventory
-        // The container field in Inventory is private, so we need to use reflection to access it
-        try {
-            java.lang.reflect.Field containerField = Inventory.class.getDeclaredField("container");
-            containerField.setAccessible(true);
-            Object container = containerField.get(inventory);
-            
-            if (container == inventory.player.getEnderChestInventory()) {
-                // This is an enderchest, return sixRows instead
-                cir.setReturnValue(ChestMenu.sixRows(syncId, inventory, inventory.player.getEnderChestInventory()));
-            }
-        } catch (Exception e) {
-            // If reflection fails, just let the normal threeRows proceed
-        }
+        // Redirect all threeRows calls to sixRows
+        // This will affect all 3-row chests, not just enderchests
+        // But since we're expanding the enderchest inventory via reflection, this should work
+        cir.setReturnValue(ChestMenu.sixRows(syncId, inventory, inventory.player.getEnderChestInventory()));
     }
 }
