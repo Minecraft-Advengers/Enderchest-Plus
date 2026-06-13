@@ -3,22 +3,22 @@ loaderVersion="[2,)"
 license="LGPL-3.0"
 
 [[mods]]
-modId="expandedenderchest"
+modId="enderchestplus"
 version="${file.jarVersion}"
 displayName="Enderchest+"
 description="Expands the enderchest to be the size of a double chest (54 slots)"
 
 [[mixins]]
-    config="expandedenderchest.mixins.json"
+    config="enderchestplus.mixins.json"
 
-[[dependencies.expandedenderchest]]
+[[dependencies.enderchestplus]]
     modId="neoforge"
     type="required"
     versionRange="[21.1.79,)"
     ordering="NONE"
     side="BOTH"
 
-[[dependencies.expandedenderchest]]
+[[dependencies.enderchestplus]]
     modId="minecraft"
     type="required"
     versionRange="[1.21.1,)"
