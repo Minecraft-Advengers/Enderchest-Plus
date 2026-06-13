@@ -17,7 +17,7 @@ public class ExpandedEnderchest {
         modEventBus.addListener(this::onCommonSetup);
 
         NeoForge.EVENT_BUS.addListener(EnderChestEventHandler::onPlayerLoggedIn);
-        NeoForge.EVENT_BUS.addListener(EnderChestEventHandler::onPlayerTick);
+        NeoForge.EVENT_BUS.addListener(EnderChestEventHandler::onContainerOpen);
     }
 
     private void onCommonSetup(final FMLCommonSetupEvent event) {
