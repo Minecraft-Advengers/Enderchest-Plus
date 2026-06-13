@@ -1,10 +1,8 @@
 package io.chaws.enderchestplus;
 
-import io.chaws.enderchestplus.event.EnderChestEventHandler;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.neoforge.common.NeoForge;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,12 +13,9 @@ public class ExpandedEnderchest {
 
     public ExpandedEnderchest(IEventBus modEventBus) {
         modEventBus.addListener(this::onCommonSetup);
-
-        NeoForge.EVENT_BUS.addListener(EnderChestEventHandler::onPlayerLoggedIn);
-        NeoForge.EVENT_BUS.addListener(EnderChestEventHandler::onContainerOpen);
     }
 
     private void onCommonSetup(final FMLCommonSetupEvent event) {
-        LOGGER.info("Expanded Enderchest initialized");
+        LOGGER.info("Enderchest+ initialized - using mixin approach for inventory expansion");
     }
 }

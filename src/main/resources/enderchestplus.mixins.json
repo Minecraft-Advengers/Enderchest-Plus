@@ -4,7 +4,8 @@
   "package": "io.chaws.enderchestplus.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "EnderChestMenuMixin"
+    "EnderChestInventoryMixin",
+    "EnderChestBlockMixin"
   ],
   "injectors": {
     "defaultRequire": 1
